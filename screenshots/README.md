@@ -1,1 +1,10 @@
-Put your execution screenshots here (01-workflow-canvas.png, 02-webhook-request.png, 03-content-preview.png, 04-execution-success.png, 05-final-post.png).
+<img width="1366" height="768" alt="Screenshot (416)" src="https://github.com/user-attachments/assets/8816a1dd-db65-4d72-9322-4423c0b58af2" />
+<img width="1366" height="768" alt="Screenshot (417)" src="https://github.com/user-attachments/assets/e376077e-e5d3-4933-a0e3-244e24ff40df" />
+<img width="1366" height="768" alt="Screenshot (418)" src="https://github.com/user-attachments/assets/22b61a2b-7ad1-4d8f-8001-b9c383fce5fa" />
+<img width="1366" height="768" alt="Screenshot (419)" src="https://github.com/user-attachments/assets/1e4c232d-4390-4d8b-9618-ae6b95fa3865" />
+<img width="1366" height="768" alt="Screenshot (420)" src="https://github.com/user-attachments/assets/7532a1c3-fb91-4286-b58e-325d24214172" />
+<img width="1366" height="768" alt="Screenshot (421)" src="https://github.com/user-attachments/assets/80b30366-09b9-455f-a15f-368ee3c3d94a" />
+<img width="1366" height="768" alt="Screenshot (423)" src="https://github.com/user-attachments/assets/f94de8e7-dc6b-45c0-80ce-077bf78d6fde" />
+<img width="1366" height="768" alt="Screenshot (425)" src="https://github.com/user-attachments/assets/cf52a70c-d4f8-4e45-92ed-ed5ac597b229" />
+<img width="1366" height="768" alt="Screenshot (427)" src="https://github.com/user-attachments/assets/2032a4ee-1049-4e78-9fb6-8d4356513eea" />
+<img width="1366" height="768" alt="Screenshot (428)" src="https://github.com/user-attachments/assets/60253097-e979-4116-91ca-1dc4e1f2199a" />
