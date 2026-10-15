@@ -1,0 +1,831 @@
+{
+  "name": "Social Media AI Poster - Final",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "a61c6ed7-36db-4d43-876b-83c46fdd382a",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        4496
+      ],
+      "id": "e2a7a7a9-115a-4b16-82aa-6bec88afb1cc",
+      "name": "Webhook",
+      "webhookId": "a61c6ed7-36db-4d43-876b-83c46fdd382a"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"You are a professional Instagram content creator and photographer. Based on this prompt: '{{ $json.body.prompt }}', respond ONLY with a valid JSON object with these exact keys:\\n\\n- caption: Write a compelling Instagram caption with an emotional hook in the first line, 2-3 sentences of storytelling, and end with a call-to-action question. Use 1-2 relevant emojis naturally.\\n\\n- hashtags: An array of 20 highly relevant hashtags mixing popular and niche tags for maximum reach.\\n\\n- image_prompt: Write a detailed, cinematic AI image generation prompt. Include: the main subject with specific details, lighting style (e.g. golden hour, soft diffused light, dramatic side lighting), camera angle (e.g. eye-level, low angle, aerial), background details, color palette, mood/atmosphere, and photography style (e.g. bokeh background, shallow depth of field, editorial style). Make it 3-4 sentences long and very specific.\\n\\nNo markdown, no explanation, just the raw JSON object.\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "a024e6ae-3d4c-48db-8559-b4bb0e317e9a",
+      "name": "Gemini - Instagram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1968,
+        4288
+      ],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "v743IhDDUIuGJHJe",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"You are a professional Facebook content creator. Based on this prompt: '{{ $json.body.prompt }}', respond ONLY with a valid JSON object with this exact key:\\n\\n- post: Write a friendly and conversational Facebook post (max 500 characters). Start with a line that stops the scroll. Write 2-3 sentences that feel personal and real. End with a clear call-to-action. Use maximum 2 emojis. Add 3-5 relevant hashtags at the very end.\\n\\nNo markdown, no explanation, just the raw JSON object.\"\n    }]\n  }]\n}",
+        "options": {}
+      },
+      "id": "554d6967-64db-4def-80bb-ed64a2828ad9",
+      "name": "Gemini - Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1968,
+        4496
+      ],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "v743IhDDUIuGJHJe",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"You are a professional LinkedIn content creator. Based on this prompt: '{{ $json.body.prompt }}', respond ONLY with a valid JSON object with this exact key:\\n\\n- post: Write a professional thought leadership post (max 700 characters). The first line must be a powerful hook that stops scrolling. Be value-driven, insightful and credibility-building. Use minimal emojis only where they add meaning. Add 3-5 professional hashtags at the end. Write like a respected industry expert.\\n\\nNo markdown, no explanation, just the raw JSON object.\"\n    }]\n  }]\n}",
+        "options": {}
+      },
+      "id": "53a67541-b10a-43ea-9d1a-8b53be5321a1",
+      "name": "Gemini - LinkedIn",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1968,
+        4688
+      ],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "v743IhDDUIuGJHJe",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.candidates[0].content.parts[0].text;\nconst cleaned = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn [{ json: { platform: 'instagram', ...parsed } }];"
+      },
+      "id": "d424ffb9-00f5-453e-88b4-07295bead3e8",
+      "name": "Parse - Instagram",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        4288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.candidates[0].content.parts[0].text;\nconst cleaned = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn [{ json: { platform: 'linkedin', ...parsed } }];"
+      },
+      "id": "70c1143a-7753-4054-86e1-efcec53b1bd1",
+      "name": "Parse - LinkedIn",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        4688
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ encodeURIComponent($json.image_prompt) }}?width=1080&height=1080&nologo=true",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "maxRedirects": 5
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "52cfeca9-cf01-4b3c-ae5d-9cda69806248",
+      "name": "Generate Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        2864,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data      = $('Combine Results1').first().json;\nconst platforms = data.platforms || [];\nconst content   = data.content   || {};\nconst imageUrl  = `https://image.pollinations.ai/prompt/${encodeURIComponent(data.image_prompt)}?width=1080&height=1080&nologo=true`;\n\nconst colors = { instagram: '#e1306c', facebook: '#1877f2', linkedin: '#0a66c2' };\nconst names  = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn' };\n\nlet previewHtml = '';\nfor (const platform of platforms) {\n  if (!content[platform]) continue;\n  const c    = content[platform];\n  const text = c.caption\n    ? c.caption + '\\n\\n' + (Array.isArray(c.hashtags) ? c.hashtags.join(' ') : (c.hashtags || ''))\n    : (c.post || '');\n  previewHtml += `<div style=\"border-left:4px solid ${colors[platform]};background:white;padding:15px;border-radius:8px;margin:12px 0\">\n    <div style=\"font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${colors[platform]};margin-bottom:8px\">${names[platform]}</div>\n    <div style=\"font-size:14px;line-height:1.7;white-space:pre-wrap;color:#333\">${text}</div>\n  </div>`;\n}\n\nreturn [{ json: { image_url: imageUrl, platforms, content, preview_html: previewHtml } }];"
+      },
+      "id": "af05165d-632b-46a0-9fc8-2c4a2a362e64",
+      "name": "Prepare Post Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3040,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html>\n<head>\n  <title>Review Your Post</title>\n  <style>\n    body { font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; padding: 20px; background: #f0f0f0; }\n    h2 { color: #222; }\n    img { width: 100%; border-radius: 12px; margin: 20px 0; display: block; }\n    .buttons { display: flex; gap: 15px; margin-top: 25px; }\n    .btn { flex: 1; padding: 16px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; text-align: center; text-decoration: none; display: block; }\n    .approve { background: #28a745; color: white; }\n    .reject  { background: #dc3545; color: white; }\n  </style>\n</head>\n<body>\n  <h2>Review Your Post</h2>\n  <img src=\"{{ $('Prepare Post Data').item.json.image_url }}\" />\n  {{ $('Prepare Post Data').item.json.preview_html }}\n  <div class=\"buttons\">\n    <a class=\"btn approve\" href=\"{{ $execution.resumeUrl }}\">✅ POST IT</a>\n    <a class=\"btn reject\" href=\"javascript:window.close()\">❌ REJECT</a>\n  </div>\n</body>\n</html>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        3232,
+        4496
+      ],
+      "id": "18b4c23b-7296-49ff-834b-adf4f961cc4b",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3440,
+        4496
+      ],
+      "id": "a6cef368-c05c-4cf6-93e1-6cf5d9f26258",
+      "name": "Wait1",
+      "webhookId": "daff6017-4e19-451e-a0a5-e2e0400341ba"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0ea6d8f0-a2a2-4e3a-bbf4-a8d74ed42d12",
+              "leftValue": "=1",
+              "rightValue": "1",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3648,
+        4496
+      ],
+      "id": "f63e21f0-034c-43fd-80fa-60e7bc9351da",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Try multiple sources for the data\nlet platforms = [];\nlet content = {};\nlet imageUrl = '';\n\n// Try Prepare Post Data\ntry {\n  const d = $('Prepare Post Data').first().json;\n  if (d && d.platforms && d.platforms.length > 0) {\n    platforms = d.platforms;\n    content   = d.content   || {};\n    imageUrl  = d.image_url || '';\n  }\n} catch(e) {}\n\n// Fallback: try Combine Results directly\nif (platforms.length === 0) {\n  try {\n    const d = $('Combine Results1').first().json;\n    if (d) {\n      content   = d.content || {};\n      platforms = (d.platforms && d.platforms.length > 0) ? d.platforms : Object.keys(content);\n      imageUrl  = `https://image.pollinations.ai/prompt/${encodeURIComponent(d.image_prompt || '')}?width=1080&height=1080&nologo=true`;\n    }\n  } catch(e) {}\n}\n\n// Final fallback: derive from content keys\nif (platforms.length === 0) {\n  platforms = Object.keys(content);\n}\n\n// Absolute fallback\nif (platforms.length === 0) {\n  platforms = ['instagram'];\n}\n\nreturn platforms.map(platform => ({\n  json: { platform, content: content[platform] || {}, image_url: imageUrl }\n}));"
+      },
+      "id": "ffead418-4058-4c4d-b9f9-f319be38e09a",
+      "name": "Split by Platform",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3888,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "r_ig",
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "instagram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "r_fb",
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "facebook",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Facebook"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "r_li",
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "linkedin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "LinkedIn"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7e2cbc39-8490-42e4-ba23-1ab1561ca117",
+      "name": "Platform Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        4048,
+        4480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/v22.0/YOUR_INSTAGRAM_USER_ID/media",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $json.image_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ ($json.content.caption || '') + '\\n\\n' + ($json.content.hashtags || '') }}"
+            },
+            {
+              "name": "access_token",
+              "value": "YOUR_INSTAGRAM_ACCESS_TOKEN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "33a23790-11c5-4f8e-ab7d-5e8d44c04fe3",
+      "name": "Instagram - Create Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        4320,
+        4304
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4560,
+        4272
+      ],
+      "id": "95d98b10-f695-4fa2-ad28-150b239e9a61",
+      "name": "Wait",
+      "webhookId": "1be80aae-6b4e-4dcf-b7f4-1133956e5ec5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/v22.0/YOUR_INSTAGRAM_USER_ID/media_publish",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "YOUR_INSTAGRAM_ACCESS_TOKEN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "38cba913-cd7f-410c-ae53-cbdb893bdb47",
+      "name": "Instagram - Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        4784,
+        4288
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "84dcd48e-2a4d-485a-9617-2aead64b1baa",
+      "name": "Facebook - COMING SOON",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4320,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Restli-Protocol-Version",
+              "value": "2.0.0"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_LINKEDIN_ACCESS_TOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ author: 'urn:li:person:YOUR_LINKEDIN_PERSON_ID', lifecycleState: 'PUBLISHED', specificContent: { 'com.linkedin.ugc.ShareContent': { shareCommentary: { text: $json.content.post }, shareMediaCategory: 'NONE' } }, visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' } }) }}",
+        "options": {}
+      },
+      "id": "845a9db0-b229-4a54-950a-5389b208a64e",
+      "name": "LinkedIn - Create Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        4320,
+        4672
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.candidates[0].content.parts[0].text;\nconst cleaned = raw.replace(/```json|```/g, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn [{ json: { platform: 'facebook', ...parsed } }];"
+      },
+      "id": "6a152478-e2ff-4777-9e72-72e9b26c5464",
+      "name": "Parse - Facebook1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "71922951-2610-402b-a1f0-272f7013d02d",
+      "name": "Merge All Platforms1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2480,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst content = {};\nlet imagePrompt = '';\n\nfor (const item of items) {\n  const d = item.json;\n  const platform = d.platform;\n  if (!platform) continue;\n  if (platform === 'instagram') {\n    content.instagram = { caption: d.caption || '', hashtags: d.hashtags || '' };\n    imagePrompt = d.image_prompt || '';\n  } else if (platform === 'facebook') {\n    content.facebook = { post: d.post || '' };\n  } else if (platform === 'linkedin') {\n    content.linkedin = { post: d.post || '' };\n  }\n}\n\n// Get platforms from webhook, fallback to deriving from content keys\nlet platforms = [];\ntry {\n  platforms =$('Webhook').first().json.body.platforms || [];\n} catch(e) {\n  platforms = [];\n}\n\nif (!platforms || platforms.length === 0) {\n  platforms = Object.keys(content);\n}\n\nreturn [{ json: { content, image_prompt: imagePrompt, platforms } }];"
+      },
+      "id": "563cb5c9-39c6-4963-ad37-287762395dd8",
+      "name": "Combine Results1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2672,
+        4496
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4560,
+        4688
+      ],
+      "id": "273cbd78-a679-4496-af47-404ecb3847f9",
+      "name": "Wait2",
+      "webhookId": "4c3ea28e-4283-4654-8d03-641adf66b0be"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Restli-Protocol-Version",
+              "value": "2.0.0"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_LINKEDIN_ACCESS_TOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ author: 'urn:li:person:YOUR_LINKEDIN_PERSON_ID', lifecycleState: 'PUBLISHED', specificContent: { 'com.linkedin.ugc.ShareContent': { shareCommentary: { text: $json.content.post }, shareMediaCategory: 'NONE' } }, visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' } }) }}",
+        "options": {}
+      },
+      "id": "8983f18d-c2a5-493b-83b6-0d9c8684ddf7",
+      "name": "LinkedIn - Create Post1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        4800,
+        4656
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Gemini - Instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Facebook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gemini - LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Instagram": {
+      "main": [
+        [
+          {
+            "node": "Parse - Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Facebook": {
+      "main": [
+        [
+          {
+            "node": "Parse - Facebook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Parse - LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse - Instagram": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platforms1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse - LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platforms1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Generate Image": {
+      "main": [
+        [
+          {
+            "node": "Prepare Post Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Post Data": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split by Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split by Platform": {
+      "main": [
+        [
+          {
+            "node": "Platform Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Platform Router": {
+      "main": [
+        [
+          {
+            "node": "Instagram - Create Container",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facebook - COMING SOON",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LinkedIn - Create Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - Create Container": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Instagram - Publish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse - Facebook1": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platforms1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All Platforms1": {
+      "main": [
+        [
+          {
+            "node": "Combine Results1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Results1": {
+      "main": [
+        [
+          {
+            "node": "Generate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn - Create Post": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn - Create Post1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "71b5c1d3-19da-44e8-8a4f-60cc55b63926",
+  "meta": {
+    "instanceId": "e06edd10330c791085b6522172e45e1926d11eb7995bf360e67655ccd1a1d364"
+  },
+  "nodeGroups": [],
+  "id": "xBbZlVbl7L9qk3Jy",
+  "tags": []
+}
