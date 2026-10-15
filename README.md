@@ -53,4 +53,4 @@ Webhook (prompt + platforms)
 
 ## Author
 
-Add your name, LinkedIn and email here.
+Ishan Masekar, masekarishan@gmail.com
